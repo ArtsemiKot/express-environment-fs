@@ -9,10 +9,13 @@ function getAllEnvironment() {
 function getEnvironmentById(id) {
     const array = JSON.parse(fs.readFileSync(path));
     const filtered = array.filter((el) => el.id == id);
+    if (filtered.length == 0) throw new Error('Элемент не найден с таким ID')
     return filtered;
 }
 
 function createEnvironment(label, category, priority) {
+    const filtered = array.filter((el) => el.label == label)
+    if (filtered.length > 0) throw new Error('Элемент с таким label  уже существует')
     const item = {
         id: label.toLowerCase(),
         label: label,
@@ -28,7 +31,7 @@ function createEnvironment(label, category, priority) {
 function updateEnvironment(id, label, category, priority) {
     const array = JSON.parse(fs.readFileSync(path));
     const filtered = array.filter((el) => el.id != id);
-    if(filtered.length == array.length) return 'ID is not found';
+    if (filtered.length == array.length) throw new Error('ID is not found');
     const item = {
         id: id,
         label: label,
@@ -40,9 +43,10 @@ function updateEnvironment(id, label, category, priority) {
     return filtered;
 }
 
-function deleteEnvironment(id){
+function deleteEnvironment(id) {
     const array = JSON.parse(fs.readFileSync(path));
     const filtered = array.filter((el) => el.id != id);
+    if (newArr.length == arr.length) throw new Error('Элемента с таким ID не существует');
     fs.writeFileSync(path, JSON.stringify(filtered));
     return filtered;
 }
